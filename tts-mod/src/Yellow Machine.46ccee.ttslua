@@ -1095,9 +1095,15 @@ function getProfileForModel(model, unit)
     -- if there arent any exactly matching profiles, try a more fuzzy search
     for _,profile in pairs(unit.modelProfiles) do
         local found = profile.name:find(model.name, 1, true) -- search for plain text (ie not pattern)
-
         if found ~= nil then return profile end
     end
+
+    -- if there arent any profiles that contain the model name, search for a profile that is in the model name 
+    for _,profile in pairs(unit.modelProfiles) do
+        local found = model.name:find(profile.name, 1, true) 
+        if found ~= nil then return profile end
+    end
+
     -- if there arent any matching profiles, assume theres only one profile for every model in the unit
     for _,profile in pairs(unit.modelProfiles) do return profile end
 
